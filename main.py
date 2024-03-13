@@ -1,6 +1,4 @@
 import pandas as pd
-vectors = []
-
 
 def euclidesLenght(vector1, vector2):
     lenght=0
@@ -20,7 +18,29 @@ def readTestFile(file_name):
 
     return df.iloc[:, :-1].values.tolist()
 
+list=readTrainingFile("C:\\Users\\48509\\Desktop\\iris.csv")
 
-trainingFilePath = input("Give path to training file :")
+##trainingFilePath = input("Give path to training file :")
 
-testFilePath = input("Give path to test file :")
+##testFilePath = input("Give path to test file :")
+
+k = input("Give k")
+
+##vectors = readTrainingFile(trainingFilePath)
+
+##Creating map of vectors
+
+mapa = {}
+for listOfList in list:
+        key = listOfList[-1]
+        value = listOfList[:-1]
+        if key in mapa.keys():
+            mapa[key]+=value
+        else:
+            mapa[key] = [value]
+
+
+##vectorsToClassified = readTestFile(testFilePath)
+
+closestVec = [];
+
