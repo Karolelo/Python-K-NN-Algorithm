@@ -19,16 +19,9 @@ def readTestFile(file_name):
 
     return df.iloc[:,:-1].values.tolist()
 
-trainingList=readTrainingFile("C:\\Users\\48509\\Desktop\\iris.csv")
-testList=readTestFile("C:\\Users\\48509\Desktop\\TestFile.csv")
-##trainingFilePath = input("Give path to training file :")
+trainingList=readTrainingFile("C:\\Users\\48509\\Desktop\\TestFile.csv")
+testList=readTestFile("C:\\Users\\48509\Desktop\\traingFile.csv")
 
-##testFilePath = input("Give path to test file :")
-
-
-##vectors = readTrainingFile(trainingFilePath)
-
-##Creating map of vectors
 def create_map_ofTraingFIle(trainingList):
     mapa = {}
     for listOfList in trainingList:
@@ -40,9 +33,6 @@ def create_map_ofTraingFIle(trainingList):
                 mapa[key] = [value]
     return mapa
 
-
-##vectorsToClassified = readTestFile(testFilePath)
-exampleVec=[1,3,4,4]
 
 
 
@@ -57,9 +47,28 @@ def k_nearest_neighbors(mapa, exampleVec, k):
 
     return closestVec[:k]
 
-print(testList)
-for testingData in testList:
-    k_nearest_neighbors(mapa,testingData,3)
 
 
-    ##TODO zmienić funkcje do czytania tego gówna
+mapa=create_map_ofTraingFIle(trainingList)
+
+for data in testList:
+    closestVec = k_nearest_neighbors(mapa,data,3)
+    countedValues={}
+    for eachOne in closestVec:
+        key=eachOne[0]
+        value=eachOne[1]
+        if key in countedValues.keys():
+            countedValues[key]+=1
+        else:
+            countedValues[key]=1
+
+    maxOccurence = 0
+    mostCommonKey = None
+
+    for key,value in countedValues.items():
+        if value > maxOccurence:
+            mostCommonKey=key
+            maxOccurence=value
+    print(f"{data} closest vectors to this {mostCommonKey}")
+
+
