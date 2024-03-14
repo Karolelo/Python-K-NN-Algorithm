@@ -19,9 +19,6 @@ def readTestFile(file_name):
 
     return df.iloc[:,:-1].values.tolist()
 
-trainingList=readTrainingFile("C:\\Users\\48509\\Desktop\\TestFile.csv")
-testList=readTestFile("C:\\Users\\48509\Desktop\\traingFile.csv")
-
 def create_map_ofTraingFIle(trainingList):
     mapa = {}
     for listOfList in trainingList:
@@ -32,8 +29,6 @@ def create_map_ofTraingFIle(trainingList):
             else:
                 mapa[key] = [value]
     return mapa
-
-
 
 
 def k_nearest_neighbors(mapa, exampleVec, k):
@@ -48,11 +43,16 @@ def k_nearest_neighbors(mapa, exampleVec, k):
     return closestVec[:k]
 
 
-
+pathToTrainList = input("Give path to train list")
+pathToTestList = input("Give path to test list")
+k = int(input('Give number of k'))
+trainingList= readTrainingFile("C:\\Users\\48509\\Desktop\\TestFile.csv") ##readTrainingFile(pathToTrainList)
+testList=readTestFile("C:\\Users\\48509\Desktop\\traingFile.csv") ##readTestFile(pathToTestList)
 mapa=create_map_ofTraingFIle(trainingList)
 
+
 for data in testList:
-    closestVec = k_nearest_neighbors(mapa,data,3)
+    closestVec = k_nearest_neighbors(mapa,data,k)
     countedValues={}
     for eachOne in closestVec:
         key=eachOne[0]
@@ -71,4 +71,31 @@ for data in testList:
             maxOccurence=value
     print(f"{data} closest vectors to this {mostCommonKey}")
 
+
+while True:
+    print(f"Enter exact length of other vectors: {len(testList[0])}")
+    customVec = [float(x) for x in input("Enter your vector, separated by spaces: ").split()]
+    try:
+        if len(customVec) == (len(trainingList[0]) - 1):
+            closestVec = k_nearest_neighbors(mapa, customVec, k)
+            countedValues = {}
+            for eachOne in closestVec:
+                key = eachOne[0]
+                if key in countedValues.keys():
+                    countedValues[key] += 1
+                else:
+                    countedValues[key] = 1
+
+            maxOccurence = 0
+            mostCommonKey = None
+
+            for key, value in countedValues.items():
+                if value > maxOccurence:
+                    mostCommonKey = key
+                    maxOccurence = value
+            print(f"The category for your vector is: {mostCommonKey}")
+        else:
+            print("You gave bad size vector")
+    except ValueError as e:
+        print(e)
 
